@@ -156,7 +156,7 @@
         var anchor = $('<span/>').attr('id', opts.anchorName(i, heading, opts.prefix) + ANCHOR_PREFIX).insertBefore($h);
 
         var span = $('<span/>')
-          .text(opts.headerText(i, heading, $h));
+          .html(opts.headerText(i, heading, $h));
 
         //build TOC item
         var a = $('<a class="list-group-item"/>')
@@ -192,7 +192,25 @@ jQuery.fn.toc.defaults = {
     return prefix+i;
   },
   headerText: function(i, heading, $heading) {
-    return $heading.text();
+    var isInner = false;
+    var isStatic = false;
+    var isRead = false;
+    var r = $heading.text().replace(/(inner)|(static)|(readonly)/g, function(m, i, s, r) {
+      isInner = i || isInner;
+      isStatic = s || isStatic;
+      isRead = r || isRead;
+      return '';
+    }).replace(/<(.*?)>/g, '');
+    if (isInner) {
+      r = '~' + r;
+    }
+    if (isStatic) {
+      r = '&lt;static&gt; ' + r;
+    }
+    if (isRead) {
+      r = '(' + r + ')';
+    }
+    return r;
   },
   itemClass: function(i, heading, $heading, prefix) {
     return prefix + '-' + $heading[0].tagName.toLowerCase();
