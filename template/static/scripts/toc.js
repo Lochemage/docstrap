@@ -63,7 +63,7 @@
     var headings = $(opts.selectors, container);
     var headingOffsets = [];
     var activeClassName = 'active';
-    var ANCHOR_PREFIX = "__anchor";
+    var ANCHOR_PREFIX = ""; //"__anchor";
     var maxScrollTo;
     var visibleHeight;
     var headerHeight = 10; // so if the header is readable, its counted as shown
