@@ -73,7 +73,7 @@
       e.preventDefault();
       var target = $(e.target);
       if (target.prop('tagName').toLowerCase() !== "a") {
-        target = target.parent();
+        target = target.parents('a').first();
       }
       var elScrollToId = target.attr('href').replace(/^#/, '') + ANCHOR_PREFIX;
       var $el = $(document.getElementById(elScrollToId));
