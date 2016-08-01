@@ -156,7 +156,7 @@
         var anchor = $('<span/>').attr('id', opts.anchorName(i, heading, opts.prefix) + ANCHOR_PREFIX).insertBefore($h);
 
         var span = $('<span/>')
-          .text(opts.headerText(i, heading, $h));
+          .html(opts.headerText(i, heading, $h));
 
         //build TOC item
         var a = $('<a class="list-group-item"/>')
@@ -192,7 +192,27 @@ jQuery.fn.toc.defaults = {
     return prefix+i;
   },
   headerText: function(i, heading, $heading) {
-    return $heading.text();
+    // Rewrite the toc entry
+    // Example: "<inner> function onAttributeChanging(name, oldValue, value) -> Number | undefined"
+    var h = $heading.text()
+      .replace(/-\>[\s\S]*/, '') // Remove all characters after the '->'
+      .replace(/\</g, '') // Remove all '<'
+      .replace(/\>/g, '') // Remove all '>'
+      .replace(/function /g, '') // Remove all 'function '
+      .replace(/typedef /g, '') // Remove all 'typedef '
+      .replace(/var /g, '') // Remove all 'var '
+      // Wrap inner, static, and readonly flags with smaller italic text.
+      .replace(/(inner)|(static)|(readonly)/g, function(m, i, s, r) {
+        return '<toc class="small"><i>' +
+          (s? 'static': '') +
+          (i? 'inner': '') +
+          (r? 'readonly': '') +
+          '</i></toc>';
+      });
+
+    // Replace function parameters with (...)
+    return h.replace(/\(([^)]+)\)/g, '(...)');
+    // Final output from example: "inner onAttributeChanging(..)"
   },
   itemClass: function(i, heading, $heading, prefix) {
     return prefix + '-' + $heading[0].tagName.toLowerCase();
