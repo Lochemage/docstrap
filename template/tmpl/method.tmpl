@@ -4,7 +4,7 @@ var self = this;
 ?>
 <hr>
 <dt>
-    <h4 class="name" id="<?js= id ?>"><?js= data.attribs + (kind === 'class' ? 'new ' : (data.kind === 'typedef'? 'typedef ': '') + 'function ') + '<b>' + name + '</b>' + (kind !== 'event' ? data.signature : '') ?>
+    <h4 class="name" id="<?js= id ?>"><toc class="attribs"><?js= data.attribs ?></toc><?js= (kind === 'class' ? 'new ' : (data.kind === 'typedef'? 'typedef ': '') + 'function ') + '<toc class="method"><b>' + name + '</b>' + (kind !== 'event' ? data.signature : '') ?></toc>
         <?js if (data.returns && returns.length) { ?>
         <?js= '->' ?>
         <?js
